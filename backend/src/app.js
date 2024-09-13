@@ -3,9 +3,9 @@ import cors from "cors";
 import express from "express";
 import session from "express-session";
 import morgan from "morgan";
-import authRouter from "./routes/auth.routes.js";
-import todosRouter from "./routes/todos.routes.js";
 import { environment } from "./config/env.js";
+import authRouter from "./routes/auth.routes.js";
+import todoRouter from "./routes/todos.routes.js";
 
 const app = express();
 const PORT = environment.server.port;
@@ -30,7 +30,7 @@ app.use(
 );
 
 app.use("/auth", authRouter);
-app.use("/todos", todosRouter);
+app.use("/todos", todoRouter);
 
 app.listen(PORT, () => {
   console.log(`Server running in ${HOST}:${PORT}`);

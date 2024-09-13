@@ -4,6 +4,10 @@ import generarJwt from "../helpers/generar-jwt.js";
 export const signIn = async (req, res) => {
   const { username, password } = req.body;
 
+  if (!username || !password) {
+    return res.status(400).json({ message: "Faltan credenciales" });
+  }
+
   try {
     const user = database.user.find(
       (user) => user.username === username && user.password === password

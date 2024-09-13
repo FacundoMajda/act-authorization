@@ -5,7 +5,7 @@ export const getAllTodos = (req, res) => {
     return res.status(401).json({ message: "No autenticado" });
   }
 
-  const todos = database.todos.filter((todo) => todo.userId === req.user.id);
+  const todos = database.todos.filter((todo) => todo.owner === req.user.id);
 
   res.json({ todos });
 };

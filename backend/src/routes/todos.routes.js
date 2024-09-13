@@ -1,8 +1,9 @@
 import { Router } from "express";
-import { getAllTodosCtrl } from "../controllers/todos.controllers.js";
+import { getAllTodos } from "../controllers/todos.controllers.js";
 
-const todosRouter = Router();
+const router = Router();
 
-todosRouter.get("/", getAllTodosCtrl);
+router.get("/", getAllTodos);
 
-export { todosRouter };
+const todoRouter = router;
+export default todoRouter;

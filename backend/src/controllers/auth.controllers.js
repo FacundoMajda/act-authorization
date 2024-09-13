@@ -1,7 +1,7 @@
 import { database } from "../db/database.js";
 import generarJwt from "../helpers/generar-jwt.js";
 
-export const signInCtrl = async (req, res) => {
+export const signIn = async (req, res) => {
   const { username, password } = req.body;
 
   try {
@@ -9,22 +9,17 @@ export const signInCtrl = async (req, res) => {
       (user) => user.username === username && user.password === password
     );
 
-    // Validación de usuario
     if (!user) {
       return res.status(401).json({ message: "Credenciales incorrectas" });
     }
 
-    // Generar token JWT
     const token = await generarJwt(user.id);
-
-    // Almacenar el token en la sesión del servidor
     req.session.token = token;
 
-    // Almacenar el token en una cookie segura
     res.cookie("authToken", token, {
-      httpOnly: true, // La cookie no es accesible desde JavaScript
-      secure: false, // Cambiar a true en producción con HTTPS
-      maxAge: 3600000, // Expiración en milisegundos (1 hora)
+      httpOnly: true,
+      secure: false,
+      maxAge: 3600000,
     });
 
     return res.json({ message: "Inicio de sesión exitoso" });
@@ -34,7 +29,7 @@ export const signInCtrl = async (req, res) => {
   }
 };
 
-export const signOutCtrl = (req, res) => {
+export const signOut = (req, res) => {
   try {
     req.session.destroy((err) => {
       if (err) {
@@ -50,8 +45,11 @@ export const signOutCtrl = (req, res) => {
   }
 };
 
-export const validateSessionCtrl = (req, res) => {
-  console.log(req.user);
+export const validateSession = (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "No autenticado" });
+  }
+
   return res.json({
     message: "Acceso permitido a área protegida",
     user: req.user,

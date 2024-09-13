@@ -1,7 +1,11 @@
 import { database } from "../db/database.js";
 
-export const getAllTodosCtrl = (req, res) => {
-  const todos = database.todos;
+export const getAllTodos = (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ message: "No autenticado" });
+  }
+
+  const todos = database.todos.filter((todo) => todo.userId === req.user.id);
 
   res.json({ todos });
 };
